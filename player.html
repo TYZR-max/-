@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>🎓 毕业密语</title>
+    <style>
+        /* 让页面看起来舒服 */
+        body {
+            background-color: #f0f2f5;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+        }
+        .box {
+            background: white;
+            padding: 30px 40px;
+            border-radius: 24px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            text-align: center;
+            max-width: 450px;
+            width: 90%;
+        }
+        h2 {
+            color: #1e293b;
+            margin-top: 0;
+            margin-bottom: 20px;
+            font-weight: 500;
+        }
+        /* 音频播放器样式 */
+        audio {
+            width: 100%;
+            margin: 20px 0;
+            border-radius: 30px;
+        }
+        /* 隐藏下载按钮（针对不同浏览器） */
+        audio::-webkit-media-controls-enclosure {
+            overflow: hidden;
+        }
+        audio::-webkit-media-controls-panel {
+            width: calc(100% + 30px);
+        }
+        .hint {
+            color: #94a3b8;
+            font-size: 14px;
+            margin-top: 20px;
+            font-style: italic;
+        }
+        .disappear-text {
+            color: #e11d48;
+            font-size: 18px;
+            margin-top: 20px;
+            font-weight: 500;
+        }
+    </style>
+</head>
+<body>
+    <div class="box">
+        <h2>🔐 只此一次的语音</h2>
+        
+        <!-- 音频播放器：controlsList="nodownload" 是关键，隐藏下载按钮 -->
+        <audio id="secretAudio" controls controlsList="nodownload">
+            <!-- ↓↓↓ 把这里替换成你的 GitHub Raw 链接 ↓↓↓ -->
+            <source src="https://raw.githubusercontent.com/TYZR-max/biye/main/biye.mp3" type="audio/mpeg">
+            你的浏览器不支持音频播放。
+        </audio>
+        
+        <p class="hint">⏳ 只能播放一次，播放后自动消失</p>
+    </div>
+
+    <script>
+        const audio = document.getElementById('secretAudio');
+        let hasPlayed = false;  // 记录是否播放过
+
+        // 当音频开始播放时触发
+        audio.onplay = function() {
+            if (!hasPlayed) {
+                hasPlayed = true;  // 标记为已播放
+                
+                // 当音频播放结束时触发
+                audio.onended = function() {
+                    // 隐藏音频播放器
+                    audio.style.display = 'none';
+                    
+                    // 在原来播放器的位置显示一段文字
+                    const box = document.querySelector('.box');
+                    const disappearMsg = document.createElement('p');
+                    disappearMsg.className = 'disappear-text';
+                    disappearMsg.innerText = '✨ 语音已消散，回忆永存 ✨';
+                    box.appendChild(disappearMsg);
+                    
+                    // 隐藏提示文字
+                    document.querySelector('.hint').style.display = 'none';
+                };
+            }
+        };
+    </script>
+</body>
+</html>
